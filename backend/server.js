@@ -1,35 +1,11 @@
-// const express = require('express');
-// const { createServer } = require('node:http');
-// const { join } = require('node:path');
-// const { Server } = require('socket.io');
-
-// const app = express();
-// const servers = createServer(app);
-// const io = new Server(servers);
-
-// app.get('/', (req, res) => {
-//     res.sendFile(join(__dirname, 'index.html'));
-// });
-
-
-// io.on('connection', (socket) => {
-//     console.log('a user connected');
-// });
-
-
-// servers.listen(3000, () => {
-//     console.log('server running at http://localhost:3000');
-// });
-
-
-
-
-
-
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
+const multer = require('multer')
+// const upload = multer({ dest: 'uploads/' })
+const path = require('path');
+const fs = require('fs');
 
 const app = express();
 const server = http.createServer(app);
@@ -42,24 +18,44 @@ app.use(cors({
 
 const io = new Server(server, {
   cors: {
-    origin: ['http://localhost:3000', 'http://localhost:3002'], // Your client-side origin
+    origin: ['http://localhost:3000', 'http://localhost:3002', 'http://localhost:3001'], // Your client-side origin
     methods: ['GET', 'POST']
   }
 });
 
 // Socket.io connection
 io.on('connection', (socket) => {
-  console.log('a user connected', socket.id);
-
-  socket.on('disconnect', () => {
-
-    console.log('user disconnected');
+  const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, 'uploads/');
+    },
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+    }
   });
 
-  // Example event handling
-  socket.on('message', (data) => {
-    console.log('message received:', data);
-    io.emit('message', { data, id: socket.id }); // Broadcast the message to all connected clients
+  // Handle image data sent from the client (assuming it's sent as a Buffer)
+  socket.on('sendImage', (imageBuffer) => {
+    const fileName = `image-${Date.now()}.png`; // Assuming PNG, you can detect type if needed
+    const filePath = path.join(__dirname, 'uploads', fileName);
+
+    fs.writeFile(filePath, imageBuffer, (err) => {
+      if (err) {
+        console.error('Failed to save image:', err);
+        socket.emit('error', 'Failed to save image');
+      } else {
+        console.log('Image saved at:', filePath);
+        socket.emit('imageSaved', { filePath });
+      }
+    });
+  });
+
+  
+
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
   });
 });
 
@@ -68,3 +64,4 @@ const PORT = process.env.PORT || 5000;
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+

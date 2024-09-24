@@ -1,5 +1,7 @@
 /backend/node_modules
 /chatapp/node_modules
+
+/front_end/node_modules
 /pmshri/node_modules
 /backend/public/uploads
 /backend/public/file/uploads
