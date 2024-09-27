@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import Chat from './components/chat';
 import './App.css';
 import ImageSender from './components/ImageSender';
+import GroupChat from './components/groupchat';
 
 const socket = io('http://localhost:5000'); // Your server-side origin
 
@@ -35,6 +36,7 @@ const App = () => {
           <li key={index}>{msg}</li>
         ))}
       </ul> */}
+      <GroupChat />
       <ImageSender />
       <Chat />
     </div>
