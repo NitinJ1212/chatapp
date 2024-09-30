@@ -26,7 +26,15 @@ const newGroupChat = (req, res, next) => {
     }
 }
 
+const addMember = (req, res, next) => {
+    const { members, chatid } = req.body;
+    const userId = req.user;
+
+    const chatExist = Chat.findOne({ _id, groupChat: true })
+
+}
 
 module.exports = {
-    newGroupChat
+    newGroupChat,
+    addMember
 }

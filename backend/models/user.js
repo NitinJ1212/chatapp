@@ -12,12 +12,6 @@ const userSchema = new Schema({
         type: Number,
         required: true,
         unique: true,
-        // validate: {
-        //     validator: function (v) {
-        //         return /^\d{10}$/.test(v); // Example: validates a 10-digit number
-        //     },
-        //     message: props => `${props.value} is not a valid mobile number!`
-        // }
     }, password: {
         type: String,
         required: true,
