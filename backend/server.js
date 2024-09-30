@@ -10,6 +10,7 @@ const connectToDatabase = require('./models/connection');
 const { errorMiddleware } = require('./middlewares/error');
 const isAuthenticated = require('./middlewares/auth');
 const userRoute = require('./routes/user');
+const chatRoute = require('./routes/chat');
 
 app.use(cookieParser());
 app.use(express.json());
@@ -23,6 +24,9 @@ app.use(cors({
 connectToDatabase();    // DB CONNECTION CALLING
 
 app.use('/user', userRoute);
+
+app.use('/chat', chatRoute);
+
 app.post('/', (req, res) => {
   res.status(200).send({ status: 200, data: "this is data" });
 })
