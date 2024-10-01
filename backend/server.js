@@ -30,7 +30,7 @@ const io = socketIo(server, {
 
 // Enable CORS
 app.use(cors({
-  origin: 'http:localhost:3000', //Your client- side origin
+  origin: "*",//['http:localhost:3000', 'http:localhost:3001'], //Your client- side origin
   methods: ['GET', 'POST']
 }));
 

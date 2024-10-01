@@ -53,8 +53,9 @@ const signup = tryCatch(async (req, res, next) => {
 })
 // routers.post('/login', 
 const login = tryCatch(async (req, res, next) => {
-    const { username, mobile, password } = req.body;
+    const { mobile, password } = req.body;
     const user = await User.findOne({ mobile }).select('+password');
+    console.log(user, mobile, "e3333333333333322222222222");
     if (!user) {
         return res.status(400).send({ status: false, message: "User not found" });
     }
