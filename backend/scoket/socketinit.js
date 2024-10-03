@@ -3,10 +3,10 @@ const socekConnection = async (io) => {
         console.log('A user connected:', socket.id);
 
         // Handle incoming messages
+
         socket.on('message', (msg) => {
-            console.log('Message received:', msg);
-            // Broadcast the message to other clients
-            socket.broadcast.emit('message', msg);
+            console.log('message received:', msg);
+            io.emit('message', { msg, id: socket.id }); // Broadcast the message to all connected clients
         });
 
         // Handle disconnection

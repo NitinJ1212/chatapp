@@ -22,7 +22,6 @@ const searchFriend = async (req, res, next) => {
         return next(new ErrorHnadler("Something went wrong", 400))
     }
     // const searchUser = await user.find({ username: searcitem, mobile: searcitem })
-    console.log("callllllllllllllleee", isNaN(+searcitem));
     let query = {};
     if (isNaN) {
         query = {

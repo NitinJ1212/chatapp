@@ -7,15 +7,16 @@ const socket = io('http://localhost:5000');
 const Chat = () => {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
-    const [receivedMessage, setReceivedMessage] = useState([]);
+    const [receivedMessage, setReceivedMessage] = useState(null);
 
     useEffect(() => {
         socket.on('message', (newMessage) => {
-            console.log(socket, socket?.id, "llllllllllllllllllllll");
+            console.log(socket, socket?.id, "llllllllllllllllllllll", newMessage);
             setReceivedMessage((prevMessages) => [...prevMessages, newMessage]);
+
         });
 
-        // Cleanup on component unmount
+        // Cleanup on component unmount 
         return () => {
             socket.off('message');
         };
@@ -32,9 +33,9 @@ const Chat = () => {
             <h1>Chat</h1>
             <div className='chat_div'>
 
-                {receivedMessage?.map((msg, index) => (
+                {receivedMessage && receivedMessage?.map((msg, index) => (
                     <div className={`${socket?.id === msg.id ? "self_messages" : "received_messages"}`} key={index}>
-                        <span className="self_inner_text">{msg.data}</span>
+                        <span className="self_inner_text">{msg?.msg}</span>
                     </div>
                 ))}
 

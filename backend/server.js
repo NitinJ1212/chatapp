@@ -13,7 +13,8 @@ const isAuthenticated = require('./middlewares/auth');
 const userRoute = require('./routes/user');
 const friendRoute = require('./routes/friendRoute');
 const chatRoute = require('./routes/chat');
-const socekConnection = require('./scoket/socketinit')
+const socekConnection = require('./scoket/socketinit');
+const messageRoute = require('./routes/message');
 
 
 app.use(cookieParser());
@@ -30,14 +31,17 @@ const io = socketIo(server, {
 
 // Enable CORS
 app.use(cors({
-  origin: "*",//['http:localhost:3000', 'http:localhost:3001'], //Your client- side origin
-  methods: ['GET', 'POST']
+  origin: ['http://localhost:3000', 'http://localhost:3001'], //Your client- side origin
+  methods: ['GET', 'POST'],
+  credentials: true,
 }));
 
 connectToDatabase();     //DB CONNECTION CALLING
 
 app.use('/user', userRoute);
 app.use('/friend', friendRoute);
+
+// app.use('/message', messageRoute);
 
 app.use('/chat', chatRoute);
 

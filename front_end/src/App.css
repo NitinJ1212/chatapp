@@ -30,10 +30,10 @@
 
 .chat_div {
   position: relative;
-  height: 900px;
+  height: 500px;
   width: 600px;
   border: 1px solid black;
-  overflow: auto;
+  overflow-y: scroll;
   margin: auto;
   background-color: rgb(230, 248, 203);
 }

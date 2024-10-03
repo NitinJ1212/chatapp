@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 
 const isAuthenticated = tryCatch(async (req, res, next) => {
     const token = req.cookies["chatapp-token"];
+    console.log(token, "pppppp[[[[[[[[[[[[[[[[[[[[[[[[=--------------")
     if (!token) {
         return next(new ErrorHnadler("Unauthorized: No token provided", 401))
     }
