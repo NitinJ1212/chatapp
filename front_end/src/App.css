@@ -30,11 +30,10 @@
 
 .chat_div {
   position: relative;
-  height: 500px;
-  width: 600px;
+  height: 100vh;
+  width: 800px;
   border: 1px solid black;
   overflow-y: scroll;
-  margin: auto;
   background-color: rgb(230, 248, 203);
 }
 
@@ -69,6 +68,10 @@
 .received_messages {
   text-align: left;
   padding: 0px 5px;
+}
+
+.no_chat_preview {
+  margin: auto;
 }
 
 @keyframes App-logo-spin {

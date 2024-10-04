@@ -10,7 +10,7 @@ userRoute.post('/signup', user.signup)
 
 userRoute.post('/login', user.login)
 
-userRoute.get('/detail', isAuthenticated, user.detail)
+userRoute.post('/detail', isAuthenticated, user.detail)
 
 
 module.exports = userRoute;

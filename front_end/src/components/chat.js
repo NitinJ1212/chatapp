@@ -1,6 +1,8 @@
 // Chat.js
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import io from 'socket.io-client';
+import { getMessages, sendMessages } from './api/messageapi';
 
 // Connect to the Socket.IO server
 const socket = io('http://localhost:5000');
@@ -9,33 +11,37 @@ const Chat = () => {
     const [messages, setMessages] = useState([]);
     const [receivedMessage, setReceivedMessage] = useState(null);
 
-    useEffect(() => {
-        socket.on('message', (newMessage) => {
-            console.log(socket, socket?.id, "llllllllllllllllllllll", newMessage);
-            setReceivedMessage((prevMessages) => [...prevMessages, newMessage]);
+    const chatID = useSelector((state) => state.chatID.chatID);
 
+    useEffect(() => {
+        if (chatID && chatID.length > 0) { getAllMessages() }
+        socket.on('message', (newMessage) => {
+            setReceivedMessage((prevMessages) => [...prevMessages, newMessage]);
         });
 
-        // Cleanup on component unmount 
         return () => {
             socket.off('message');
         };
-    }, []);
-
-    const sendMessage = () => {
+    }, [chatID]);
+    const getAllMessages = async () => {
+        const response = await getMessages(chatID)
+        if (response.status) {
+            setReceivedMessage(response.data);
+        }
+    }
+    const sendMessage = async () => {
+        const response = await sendMessages(message, chatID);
         if (message) {
             socket.emit('message', message);
             setMessage('');
         }
     };
-    return (
-        <div>
-            <h1>Chat</h1>
+    return (<>
+        {chatID !== '' ?
             <div className='chat_div'>
-
                 {receivedMessage && receivedMessage?.map((msg, index) => (
                     <div className={`${socket?.id === msg.id ? "self_messages" : "received_messages"}`} key={index}>
-                        <span className="self_inner_text">{msg?.msg}</span>
+                        <span className="self_inner_text">{msg?.message}</span>
                     </div>
                 ))}
 
@@ -48,8 +54,11 @@ const Chat = () => {
                     />
                     <button onClick={sendMessage}>Send</button>
                 </div>
+            </div> : <div className='no_chat_preview'>
+                Start new chat
             </div>
-        </div>
+        }
+    </>
     );
 };
 

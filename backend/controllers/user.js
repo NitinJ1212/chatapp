@@ -11,7 +11,8 @@ const { tryCatch, ErrorHnadler } = require('../middlewares/error');
 
 // routers.post('/user-detail', 
 const detail = tryCatch(async (req, res) => {
-    const { _id } = req.body;
+    // const { _id } = req.body;
+    const _id = req.user
     const user = await User.findById({ _id })
     if (user) {
         res.status(200).send({ status: true, data: user });

@@ -1,0 +1,7 @@
+.layout_main {
+    display: flex;
+    padding: 2rem;
+    background-color: aliceblue;
+    height: 100vh;
+    margin: auto;
+}

@@ -1,7 +1,7 @@
 // src/components/ChatMain.js
 import React, { useState } from 'react';
-import ChatSidebar from './ChatSidebar';
 import MessageBox from './Messagebox';
+import ChatSidebar from './common/chatsidebar/ChatSidebar';
 
 const ChatMain = () => {
     const [contacts] = useState([

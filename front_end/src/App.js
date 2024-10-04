@@ -60,9 +60,13 @@ import ChatMain from './components/ChatMain';
 import Layout from './layout/Layout';
 import Signin from './components/auth/Signin';
 import Cookies from 'js-cookie';
+// index.js or App.js
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 
 const App = () => {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(true);
 
 
   const cookieName = 'chatapp-token';
@@ -82,19 +86,17 @@ const App = () => {
   return (
     <Router>
       <div>
-        <h1>Socket.IO Chat</h1>
-        <Layout>
-          {token ?
+        {token ?
+          <Layout>
             <Routes>
-              <Route path="/chat" element={<Chat />} />
-              <Route path="/" element={<div>Welcome to the Chat App! Navigate to /chat to start chatting.</div>} />
+              <Route path="/" element={<Chat />} />
             </Routes>
-            :
-            <Routes>
-              <Route path="/" element={<Signin />} />
-            </Routes>
-          }
-        </Layout>
+          </Layout>
+          :
+          <Routes>
+            <Route path="/" element={<Signin />} />
+          </Routes>
+        }
       </div>
     </Router>
   );

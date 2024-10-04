@@ -46,19 +46,23 @@ const searchFriend = async (req, res, next) => {
 }
 
 const getAllFriendList = tryCatch(async (req, res, next) => {
-    const sender = req.user;
-    if (!sender) {
-        return next(new ErrorHnadler("User ID is required.", 400))
+    const user_id = req.user;
+    if (!user_id) {
+        return next(new ErrorHnadler("User_id ID is required.", 400))
     }
-    const list = await friendList.find({
-        $or: [
-            { sender: sender },
-            { receiver: sender }
-        ], $and: [
-            { friend: true }]
-    })
+    const list = await friendList.find({ $or: [{ sender: user_id }, { receiver: user_id }], $and: [{ friend: true }] }).select("sender receiver -_id")
+
+    const receivers = list.reduce((prev, curr) => {
+        if (curr.receiver !== user_id) {
+            prev.push(curr.receiver)
+        }
+        if (curr.sender !== user_id) { prev.push(curr.sender) }
+        return prev;
+    }, [])
+
+    const friendDetail = await user.find({ $and: [{ _id: { $in: receivers } }, { _id: { $ne: user_id } }] });
     if (list) {
-        return res.status(200).json({ status: true, data: list });
+        return res.status(200).json({ status: true, data: friendDetail });
     } else {
         return next(new ErrorHnadler("Something went wrong", 400))
     }

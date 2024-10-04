@@ -6,7 +6,7 @@ const socekConnection = async (io) => {
 
         socket.on('message', (msg) => {
             console.log('message received:', msg);
-            io.emit('message', { msg, id: socket.id }); // Broadcast the message to all connected clients
+            io.emit('message', { message: msg, id: socket.id }); // Broadcast the message to all connected clients
         });
 
         // Handle disconnection

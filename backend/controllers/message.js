@@ -30,4 +30,16 @@ const sendMessage = tryCatch((req, res, next) => {
 })
 
 
-module.exports = { sendMessage }
+const getAllMessages = tryCatch(async (req, res, next) => {
+    console.log(req.body.receiver, "[[[[[[[[[[[[")
+    const { receiver } = req.body
+    const user = req.user;
+    if (!user) { return next(new ErrorHnadler("User not found", 404)) }
+    if (!receiver) { return next(new ErrorHnadler("Friend id is missing", 400)) }
+
+    const allMessages = await messages.find({ $or: [{ receiver: user, sender: receiver }, { receiver: receiver, sender: user }] })
+    console.log(allMessages, "gettttttt-0-0-0-0-0-0-0-0-0-0-0-0-0-0");
+    return res.status(200).json({ status: true, data: allMessages })
+})
+
+module.exports = { sendMessage, getAllMessages }

@@ -41,7 +41,7 @@ connectToDatabase();     //DB CONNECTION CALLING
 app.use('/user', userRoute);
 app.use('/friend', friendRoute);
 
-// app.use('/message', messageRoute);
+app.use('/message', messageRoute);
 
 app.use('/chat', chatRoute);
 

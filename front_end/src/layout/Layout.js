@@ -1,11 +1,16 @@
 import React from 'react'
-import ChatSidebar from '../components/ChatSidebar'
+import styles from './layout.module.css'
+import ChatSidebar from '../components/common/chatsidebar/ChatSidebar'
+import ChatHeader from '../components/common/chatheader/chatHeader'
 
 export default function Layout({ children }) {
     return (
-        <div>
-            <ChatSidebar />
-            {children}
-        </div>
+        <>
+            <ChatHeader />
+            <div className={styles.layout_main}>
+                <ChatSidebar />
+                {children}
+            </div>
+        </>
     )
 }
